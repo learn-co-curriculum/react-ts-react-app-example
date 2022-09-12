@@ -79,14 +79,23 @@ If we make any changes to our app while the server is running, it will 'hot
 reload,' and update the app in the browser. If there are app-breaking errors in
 your code, the browser will display those errors instead.
 
-We'll start by exploring the JavaScript code for this sample app in the `src`
+We'll start by exploring the code for this sample app in the `src`
 directory.
 
-## index.js
+## index.tsx
 
-The "entry point" into our application — the first JavaScript code that will run
-when our app starts up — is in the `src/index.js` file. Open that file in your
-text editor. Inside, you'll see something like this:
+The first thing we'll notice upon opening the `src` folder is that some files 
+have a curious extension: `.tsx`. This indicates to TypeScript that the file 
+will include some JSX code. If we had given these files just the `.ts` extension,
+any JSX code written inside would not work.
+
+We will learn what exactly JSX is later in this lesson, but we felt it important 
+to note that difference in file extension. Now, let's get into the contents of the
+`index.tsx` file.
+
+This file is called the "entry point" into our application. It contains the code 
+that will be run first when our app starts up. Open it in your text editor. 
+Inside, you'll see something like this:
 
 ```jsx
 import React from "react";
@@ -105,8 +114,11 @@ arguments:
 
 - A **React component** to render (typically, we'll render our top-level `App`
   component here).
+    - **Note**: The default inferred type for React components is `JSX.Element`.
 - A **DOM element** where we want that component to be rendered (by convention,
   a `div` with the ID of `root`).
+    - **Recall**: The default inferred type for DOM elements when queried with
+    methods such as `getElementId` is `HTMLelement`.
 
 `ReactDOM.render()` will always be used in your applications. This one small
 function is how the rest of our application — all the components we'll write —
@@ -118,12 +130,12 @@ folder. Take a look at it now. Can you see where the `div` with the ID of `root`
 is?
 
 In general, when you're given a React project to work with, it's a good idea to
-start by reading the `index.js` file then work your way down from there into the
+start by reading the `index` file then work your way down from there into the
 rest of the components.
 
-## App.js
+## App.tsx
 
-Next, open up `src/components/App.js` in a text editor. This file contains our
+Next, open up `src/components/App.tsx` in a text editor. This file contains our
 `App` component. Within the `App` component is a section of code that looks
 _very much_ like HTML:
 
@@ -148,7 +160,8 @@ format(new Date(), "MMMM do yyyy, h:mm:ss a");
 
 As it turns out, this is actually _all_ JavaScript. The HTML-like syntax is
 called JSX. It lets us write code that looks nearly identical to HTML, but
-allows us to mix in vanilla JavaScript and other neat things.
+allows us to mix in vanilla JavaScript or even TypeScript, as we'll do, and 
+other neat things.
 
 Reading through the JSX code, we've got one `div` that contains three child
 elements, `<h1>`, `<p>` and `<ExampleComponent />`. In your browser, _these_ are
@@ -156,14 +169,14 @@ the elements being displayed! The `<h1>` provides a timestamp of the exact time
 the app was loaded, and the `<p>` section includes the brief text on JSX.
 
 The `ExampleComponent` contains the sunglasses GIF. In the `src` folder, take a
-look at `ExampleComponent.js`. You'll see a file very similar to `App.js`,
+look at `ExampleComponent.tsx`. You'll see a file very similar to `App.tsx`,
 containing `<img>` and `<p>` elements.
 
-By including `<ExampleComponent />` in `App.js`'s JSX, we are able to use the
-contents of the component. If you copy and paste `<ExampleComponent />` so it is
+By including `<ExampleComponent />` in `App.tsx`'s JSX, we are able to use the
+contents of that component. If you copy and paste `<ExampleComponent />` so it is
 listed two times in a row, _two_ GIFs will appear on the page. Try this now.
 
-What about the rest of `App.js`, though? Moving out from the middle, we see this
+What about the rest of `App.tsx`, though? Moving out from the middle, we see this
 JSX code is the _return_ value of a function called `App`:
 
 ```js
@@ -182,6 +195,12 @@ We've already seen that it is possible to have multiple files that contain
 visible content, i.e., by using both `App` and `ExampleComponent`.
 `ExampleComponent`, however, is used within `App`. `App` is at the top-most
 level; it is the _parent component_ of our React app content.
+
+As for types, as was noted earlier, the expected return type for React function 
+components is `JSX.Element`, a type interface provided by the React library.
+Typically, we won't have to type our function components explicitly 
+(`function App(): JSX.Element {}`}), as TypeScript will catch if a component 
+being rendered does not return a proper JSX element. 
 
 ## Importing, Exporting, and the Dependency Tree
 
@@ -229,15 +248,15 @@ file tree. By importing `./ExampleComponent`, we make `<ExampleComponent />`
 available for use in the `App` component's return statement.
 
 OK, then what is happening with `export`? By including the `export` line, we are
-allowing _other_ files to _import_ things from the `App.js` file. There are
-different types of exports, like named exports and default exports, but we will
-dive deeper into this topic in a later lesson.
+allowing _other_ files to _import_ things from the `App.tsx` file. There are
+different types of exports, like named exports, but we will dive deeper into this 
+topic in a later lesson.
 
 For now, we will just focus on default exports. The line, `export default App`
 denotes that our `App` function is the main thing we want to export from our
-`App.js` file. You can have only one default export per file. If you take a look
-at `index.js`, you can see at the top of the file that we are _importing_ `App`
-from the `App.js` file in the `src/components` directory (the `.js` does not
+`App.js` file. You can have only one _default_ export per file. If you take a look
+at `index.tsx`, you can see at the top of the file that we are _importing_ `App`
+from the `App.tsx` file in the `src/components` directory (the `.tsx` does not
 need to be included). This import statement is what we use to import something
 that is the default export of another file:
 
@@ -246,11 +265,11 @@ import App from "./components/App";
 ```
 
 This structure of importing and exporting allows for files to create a 'tree' of
-dependencies. `ExampleComponent.js` has an `export` statement as well (take the
-time to locate it), and is imported into `App.js`. Additionally, `App.js` is
-imported into `index.js`.
+dependencies. `ExampleComponent.tsx` has an `export` statement as well (take the
+time to locate it), and is imported into `App.tsx`. Additionally, `App.tsx` is
+imported into `index.tsx`.
 
-The `index.js` file doesn't have an export. It is the 'top' of this dependency
+The `index.tsx` file doesn't have an export. It is the 'top' of this dependency
 tree.
 
 ## Debugging Components
@@ -271,7 +290,7 @@ about all the components we're using so far in the app!
 ## Deliverables
 
 There are three tests to pass in this lesson. They are all related to the
-content within `src/components/App.js`.
+content within `src/components/App.tsx`.
 
 1. Replace the contents of the `h1` element so that, instead of a time, it just
    says 'Now'
@@ -283,25 +302,30 @@ content within `src/components/App.js`.
 When working on React labs, it's helpful to have two terminal tabs open:
 
 - In the first tab, run `npm start` to run your React app in the browser
-- In the second tab, run `learn test` or `npm test` to see the test output
+- In the second tab, run `npm test` to see the test output
+
+> Notice how we don't have a `tsc --watch` tab running? We don't need 
+> to explicitly use the TypeScript compiler ourselves when working in React projects 
+> that have been configured to use TypeScript - React will handle that for us. 
 
 ## Conclusion
 
 There is a lot we still haven't touched on, and we will go into greater depth on
 how things work in the following lessons. Almost all of our work, however, will
-be done within `App.js` and child components of it. This is where all of our
+be done within `App.tsx` and child components of it. This is where all of our
 creative energy will be spent.
 
-This file structure in this lesson is what `create-react-app` automatically
-generates, and it's what you'll see in many React projects. Using this
+This file structure in this lesson is what a tool called `create-react-app` 
+automatically generates, and it's what you'll see in many React projects. Using this
 structure, a lot of set-up is abstracted away. We have all the boilerplate code
-in place in the `index.html` and `index.js` files so that we can start focusing
-on writing the core functionality of our app using components, like in `App.js`.
+in place in the `index.html` and `index.tsx` files so that we can start focusing
+on writing the core functionality of our app using components, like in `App.tsx`.
 
 ## Resources
 
 - [React DevTools - Chrome][devtools-chrome]
 - [React DevTools - Firefox][devtools-firefox]
+- [create-react-app](https://create-react-app.dev/)
 
 [jsx]:
   https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html

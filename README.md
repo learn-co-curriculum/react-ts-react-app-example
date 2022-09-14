@@ -118,7 +118,7 @@ arguments:
 - A **DOM element** where we want that component to be rendered (by convention,
   a `div` with the ID of `root`).
     - **Recall**: The default inferred type for DOM elements when queried with
-    methods such as `getElementId` is `HTMLelement`.
+    methods such as `getElementById` is `HTMLElement`.
 
 `ReactDOM.render()` will always be used in your applications. This one small
 function is how the rest of our application — all the components we'll write —
@@ -204,7 +204,7 @@ being rendered does not return a proper JSX element.
 
 ## Importing, Exporting, and the Dependency Tree
 
-There are two other sections in the `App.js` file we haven't touched on: the
+There are two other sections in the `App.tsx` file we haven't touched on: the
 `import` and `export` sections at the top and bottom.
 
 ```js
@@ -220,7 +220,7 @@ export default App;
 ```
 
 `react` and `date-fns` are both npm packages, so what is happening here?
-`App.js` is _pulling in_ specific content from these two packages! `react` and
+`App.tsx` is _pulling in_ specific content from these two packages! `react` and
 `date-fns` are being _imported_ from the `node_modules` folder, which was
 created when we ran `npm install`.
 
@@ -254,7 +254,7 @@ topic in a later lesson.
 
 For now, we will just focus on default exports. The line, `export default App`
 denotes that our `App` function is the main thing we want to export from our
-`App.js` file. You can have only one _default_ export per file. If you take a look
+`App.tsx` file. You can have only one _default_ export per file. If you take a look
 at `index.tsx`, you can see at the top of the file that we are _importing_ `App`
 from the `App.tsx` file in the `src/components` directory (the `.tsx` does not
 need to be included). This import statement is what we use to import something
@@ -296,7 +296,7 @@ content within `src/components/App.tsx`.
    says 'Now'
 2. If you added a second `<ExampleComponent />`, be sure to remove it
 3. Add in a _new_ component, `<TestComponent />`, just below
-   `<ExampleComponent />`, in the `App.js` file (remember: you will need to
+   `<ExampleComponent />`, in the `App.tsx` file (remember: you will need to
    **import** the component before you can use it)
 
 When working on React labs, it's helpful to have two terminal tabs open:
@@ -317,7 +317,7 @@ creative energy will be spent.
 
 This file structure in this lesson is what a tool called `create-react-app` 
 automatically generates, and it's what you'll see in many React projects. Using this
-structure, a lot of set-up is abstracted away. We have all the boilerplate code
+structure, a lot of setup is abstracted away. We have all the boilerplate code
 in place in the `index.html` and `index.tsx` files so that we can start focusing
 on writing the core functionality of our app using components, like in `App.tsx`.
 
